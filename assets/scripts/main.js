@@ -1,10 +1,13 @@
 // main.js
+const fs = require('fs');
 
 // Run the init() function when the page has loaded
 window.addEventListener('DOMContentLoaded', init);
 
 // Starts the program, all function calls trace back here
 function init() {
+  // Store the sample data first from the file storage
+  populateWithSampleData();
   // Get the recipes from localStorage
   let recipes = getRecipesFromStorage();
   // Add each recipe to the <main> element
@@ -108,4 +111,16 @@ function initFormHandler() {
     document.querySelector('main').innerHTML = '';
   });
 
+}
+
+const populateWithSampleData = () => {
+  let fileContents;
+  fs.readFile('../../reference/recipes.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Cannot Read Sample Data');
+      return;
+    }
+    fileContents = data;
+  });
+  saveRecipesToStorage(JSON.parse(fileContents));
 }
